@@ -158,61 +158,68 @@ class CurrencyExchange extends Component {
         console.log('test' + chooseList)
         const choose =(this.state.choose ? this.state.choose : chooseList[0]);
         console.log(choose)
+
         const addForm = 
-        <div color={show ? 'warning' : 'secondary'}>
-        <select id="code-select" style={{width:'74%'}} onChange={this.handleChange}>
+        <div id="code-select-wrapper">
+        <select id="code-select" onChange={this.handleChange}>
             {chooseList.map(function(code, i){
                 return <option value={code} key={code}>{code}</option>
             })}
         </select>
-        <span addontype="append"><button onClick={this.handleNew} value={choose} >submit</button></span>                
+        <button onClick={this.handleNew} value={choose} >submit</button>               
         </div>;    
 
         return (
-            <div>
-
-            {currList.USD.code} - {currList.USD.name}
+            <div id="app-wrapper">
             
-            <div className="mt-4">
-                <span addontype="prepend">{currList.USD.code}</span>
-                <NumberFormat className="text-right pr-2" style={{width:'79%'}} thousandSeparator={true} prefix={''} fixedDecimalScale={true} decimalSeparator={'.'} decimalScale={2} value={basenum} onValueChange={this.inputChangedHandler} />
+            <div id="app-header">
+            <em>{currList.USD.code} - {currList.USD.name}</em>
+                <div className="app-header-flex">
+                    <span>{currList.USD.code}</span>
+                    <NumberFormat thousandSeparator={true} prefix={''} fixedDecimalScale={true} decimalSeparator={'.'} decimalScale={2} value={basenum} onValueChange={this.inputChangedHandler} />
+                </div>
             </div>
+            
+            
+            
 
-
+            
+            <ul id="currencyList">
             {selected.map(function(code){
                 let tcode = code;
                 let trate = parseFloat(rates[code]).toFixed(2);
                 let tratetot = parseFloat(basenum * trate).toFixed(2);
 
                 return(
-                  <div key={code}>
-                      <p>{tcode}</p>
-                      <NumberFormat value={tratetot} thousandSeparator={','} displayType={'text'}  prefix={''} fixedDecimalScale={true} decimalSeparator={'.'} decimalScale={2} />
+                  <li key={code}>
+                      <div className="flex-info">
+                        <div className="code">{tcode}</div>
+                        <NumberFormat value={tratetot} thousandSeparator={','} displayType={'text'}  prefix={''} fixedDecimalScale={true} decimalSeparator={'.'} decimalScale={2} />
 
                         
-                      <div>{currList[tcode].code} - {currList[tcode].name}</div>
+                       <div className="code-def">{currList[tcode].code} - {currList[tcode].name}</div>
 
-                       <div>{'1'} {base} = {tcode} <NumberFormat value={trate} thousandSeparator={','} displayType={'text'}  prefix={''} fixedDecimalScale={true} decimalSeparator={'.'} decimalScale={2} /></div>
+                       <div className="exchange-rate">{'1'} {base} = {tcode} <NumberFormat value={trate} thousandSeparator={','} displayType={'text'}  prefix={''} fixedDecimalScale={true} decimalSeparator={'.'} decimalScale={2} /></div>
 
-
-                       <div className="text-center" style={{width:'10%', verticalAlign:'middle'}}>
-                          <button onClick={this.deleteList} value={code}>-</button>
-                        </div>
-                  
-                  </div>
+                    </div>
+                       
+                    <div className="flex-button">
+                        <button onClick={this.deleteList} value={code}>-</button>
+                    </div>
+                    
+                  </li>
                 )
-              }, this)}
+              }, this)} 
+              </ul>
 
 
-                <div>
+                <div className="add-wrapper">
 
                 {show ? addForm : null}
                 
-
-                <br/>
-                <button color={show ? 'warning' : 'secondary'} className="mb-2" onClick={this.handleToggleClick}>
-                  {show ? '(x) Cancel More Currencies' : '(+) Add More Currencies'}        
-                </button>                
+                    <button className="addToggle" onClick={this.handleToggleClick}>
+                    {show ? '(x) Cancel' : '(+) Add More Currencies'}        
+                    </button>
               </div>
 
 
